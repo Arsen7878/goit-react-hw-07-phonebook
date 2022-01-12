@@ -1,25 +1,25 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAddContact } from 'redux/contacts/items/items-operations';
-import { getItems } from 'redux/contacts/items/items-selectors.js';
+import { itemsOperations, itemsSelectors } from 'redux/contacts/items';
 import c from './ContactForm.module.css';
 
 function ContactForm() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
-  const contacts = useSelector(getItems);
+  const contacts = useSelector(itemsSelectors.getItems);
 
   const dispatch = useDispatch();
 
   const handleChange = e => {
+    const { value } = e.target;
     switch (e.target.name) {
       case 'name':
-        setName(e.target.value);
+        setName(value);
         break;
 
       case 'phone':
-        setPhone(e.target.value);
+        setPhone(value);
         break;
 
       default:
@@ -38,7 +38,8 @@ function ContactForm() {
       return;
     }
 
-    dispatch(fetchAddContact({ name, phone }));
+    dispatch(itemsOperations.fetchAddContact({ name, phone }));
+
     reset();
   };
 
